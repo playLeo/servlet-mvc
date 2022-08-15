@@ -106,6 +106,45 @@ PrintWriter writer = response.getWriter();
 writer.println("ok");
 ```
 
-### Servlet 만을 사용해서 html 정보를 넘기기 - messege body에 html을 하나하나 넣어줘야 한다.
+### Servlet 만 사용
 
-![https://github.com/playLeo/servlet-mvc/tree/main/src/main/java/hello/servlet/web/servlet]
+https://github.com/playLeo/servlet-mvc/tree/main/src/main/java/hello/servlet/web/servlet
+
+### JSP + Servlet 사용 + view 분리
+
+* Http messege body에 html을 직접 전달해서 동적 페이지를 만드는 힘든작업을 JSP 도입으로 해결하고, MVC 모델을 도입해 비지니스 로직과 뷰를 분리해 유지보수성을 높인다. 
+
+https://github.com/playLeo/servlet-mvc/tree/main/src/main/java/hello/servlet/web/servletmvc
+
+* JSP 파일이 분리되어 화면을 구성할 때, 필요한 데이터를 받아야 한다. -> JSP는 HttpServletRequest를 Model로 사용할 수 있다.
+* 비지니스 로직에서 View에 필요한 데이터를 request.setAttribute로 저장
+* View 로직에서 필요한 데이터를 request.getAttribute로 꺼내 사용할 수 있다. -> JSP 문법 ${}로 편하게 사용 가능
+* request.getRequestDisptcher(viewPath).forward(request, response)  - 서블릿이나 JSP로 이동할 수 있는 기능(버서 내부에서 다시 호출)
+* /WEB_INF 경로 안에 있는 JSP는 외부에서 직접 호출 불가능하고, 컨트롤러를 통해서만 호출 가능하다.
+
+
+### Front Controller 도입 - v1
+
+* 스프링 MVC는 DispatcherServlet이 Front Controller 패턴으로 구현되어 있다.
+* 프론트 컨트롤러를 제외한 나머지 컨트롤러는 서블릿을 사용하지 않아도 된다.
+
+https://github.com/playLeo/servlet-mvc/tree/main/src/main/java/hello/servlet/web/frontcontroller/v1
+
+![Front Controller IMG](https://velog.velcdn.com/images%2Fbins1225%2Fpost%2F16bbc561-cb66-4265-b050-2ef90aba07d8%2Fimage.png)
+
+### Front Controller를 통한 포워드 작업 일괄처리 - v2
+
+https://github.com/playLeo/servlet-mvc/tree/main/src/main/java/hello/servlet/web/frontcontroller/v2
+
+![Front Controller view 분리 IMG](https://velog.velcdn.com/images%2Fbins1225%2Fpost%2F11ece184-dcf7-45d9-a540-22623855d813%2Fimage.png)
+
+
+
+
+
+
+
+
+
+
+
