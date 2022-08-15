@@ -108,21 +108,4 @@ writer.println("ok");
 
 ### Servlet 만을 사용해서 html 정보를 넘기기 - messege body에 html을 하나하나 넣어줘야 한다.
 
-```java
-@WebServlet(name = "responseHtmlServlet", urlPatterns = "/response-html")
-public class ResponseHtmlServlet extends HttpServlet {
-   @Override
-   protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-     response.setContentType("text/html");
-     response.setCharacterEncoding("utf-8");
-
-     PrintWriter writer = response.getWriter();
-     writer.println("<html>");
-     writer.println("<body>");
-     writer.println(" <div>안녕?</div>");
-     writer.println("</body>");
-     writer.println("</html>");
-   }
-}
-```
+![https://github.com/playLeo/servlet-mvc/tree/main/src/main/java/hello/servlet/web/servlet]
