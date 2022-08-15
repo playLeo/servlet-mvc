@@ -59,7 +59,8 @@ public class RequestBodyStringServlet extends HttpServlet {
 **JSON 타입의 HTTP 메세지 바디 조회**
 
 JSON타입으로 온 데이터를 파싱해서 사용할 수 있다.
-*Jackson, Gson 같은 JSON 라이브러리를 추가해서 사용해야한다. (스프링 부트는 Jackson 제공)
+* Jackson, Gson 같은 JSON 라이브러리를 추가해서 사용해야한다. (스프링 부트는 Jackson 제공)
+
 ```java
 @WebServlet(name = "requestBodyJsonServlet", urlPatterns = "/request-bodyjson")
 public class RequestBodyJsonServlet extends HttpServlet {
@@ -84,6 +85,9 @@ public class RequestBodyJsonServlet extends HttpServlet {
 }
 ```
 
+**참고**
+객체를 JSON 형식으로 파싱하려면 objectMapper.writeValueAsString()를 사용하면 된다.
+
 ### HttpServletResponse - HTTP 응답 메세지를 파싱한 결과를 객체로 반환한다.
 ```java
 //[status-line]
@@ -95,8 +99,30 @@ response.setHeader("Content-Type", "text/plain;charset=utf-8");
 response.setHeader("Cache-Control", "no-cache, no-store, mustrevalidate");
 response.setHeader("Pragma", "no-cache");
 response.setHeader("my-header","hello");
+response.sendRedirect("/basic/hello-form.html");
 
 //[message body]
 PrintWriter writer = response.getWriter();
 writer.println("ok");
+```
+
+### Servlet 만을 사용해서 html 정보를 넘기기 - messege body에 html을 하나하나 넣어줘야 한다.
+
+```java
+@WebServlet(name = "responseHtmlServlet", urlPatterns = "/response-html")
+public class ResponseHtmlServlet extends HttpServlet {
+   @Override
+   protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+     response.setContentType("text/html");
+     response.setCharacterEncoding("utf-8");
+
+     PrintWriter writer = response.getWriter();
+     writer.println("<html>");
+     writer.println("<body>");
+     writer.println(" <div>안녕?</div>");
+     writer.println("</body>");
+     writer.println("</html>");
+   }
+}
 ```
