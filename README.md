@@ -48,10 +48,55 @@ public class RequestBodyStringServlet extends HttpServlet {
  @Override
  protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
  
- 
+ //inputStream 은 byte 코드를 반환
  ServletInputStream inputStream = request.getInputStream();
  String messageBody = StreamUtils.copyToString(inputStream, StandardCharsets.UTF_8);
  System.out.println("messageBody = " + messageBody);
  response.getWriter().write("ok");
  }}
+```
+
+**JSON 타입의 HTTP 메세지 바디 조회**
+
+JSON타입으로 온 데이터를 파싱해서 사용할 수 있다.
+*Jackson, Gson 같은 JSON 라이브러리를 추가해서 사용해야한다. (스프링 부트는 Jackson 제공)
+```java
+@WebServlet(name = "requestBodyJsonServlet", urlPatterns = "/request-bodyjson")
+public class RequestBodyJsonServlet extends HttpServlet {
+
+ //Jackson라이브러리 objectMapper 객체 사용
+   private ObjectMapper objectMapper = new ObjectMapper();
+
+   @Override
+   protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+   
+     //Json형식 파싱 안하고 사용
+     ServletInputStream inputStream = request.getInputStream();
+     String messageBody = StreamUtils.copyToString(inputStream,StandardCharsets.UTF_8);
+     System.out.println("messageBody = " + messageBody);
+     
+     //프로퍼티 설정되어있는 HelloData
+     HelloData helloData = objectMapper.readValue(messageBody, HelloData.class);
+     System.out.println("helloData.username = " + helloData.getUsername());
+     System.out.println("helloData.age = " + helloData.getAge());
+     response.getWriter().write("ok");
+  }
+}
+```
+
+### HttpServletResponse - HTTP 응답 메세지를 파싱한 결과를 객체로 반환한다.
+```java
+//[status-line]
+response.setStatus(HttpServletResponse.SC_OK); //200
+//[response-headers]
+response.setHeader("Content-Type", "text/plain;charset=utf-8");
+//response.setContentType("text/plain");
+//response.setCharacterEncodin("utf-8");
+response.setHeader("Cache-Control", "no-cache, no-store, mustrevalidate");
+response.setHeader("Pragma", "no-cache");
+response.setHeader("my-header","hello");
+
+//[message body]
+PrintWriter writer = response.getWriter();
+writer.println("ok");
 ```
