@@ -78,6 +78,10 @@ public class RequestBodyStringServlet extends HttpServlet {
 JSON타입으로 온 데이터를 파싱해서 사용할 수 있다.
 * Jackson, Gson 같은 JSON 라이브러리를 추가해서 사용해야한다. (스프링 부트는 Jackson 제공)
 
+content-type: application/json
+
+보통 객체형식으로 전송한다.
+
 ```java
 @WebServlet(name = "requestBodyJsonServlet", urlPatterns = "/request-bodyjson")
 public class RequestBodyJsonServlet extends HttpServlet {
@@ -116,11 +120,22 @@ response.setHeader("Content-Type", "text/plain;charset=utf-8");
 response.setHeader("Cache-Control", "no-cache, no-store, mustrevalidate");
 response.setHeader("Pragma", "no-cache");
 response.setHeader("my-header","hello");
+
+cookie(response);
+
 response.sendRedirect("/basic/hello-form.html");
 
 //[message body]
 PrintWriter writer = response.getWriter();
 writer.println("ok");
+
+private void cookie(HttpServletResponse response){
+   //Set-Cookie: myCooke=good; Max-Age=600;
+   //response.setHeader("Set-Cooke", "myCooke=good; Max-Age=600");
+   Cookie cookie = new Cookie("myCookie", "good");
+   cookie.setMaxAge(600);
+   response.addCookie(cookie);
+}
 ```
 
 ### Servlet 만 사용
