@@ -1,8 +1,25 @@
 # servlet-mvc
 스프링 MVC 1편
 
+## Web Server vs WAS
+
+* Web Server - 정적 리소스 처리
+* WAS - 정적 리소스 처리
+
+크게보면 이렇지만 Web Server도 어플리케이션 로직을 처리하면서 경계가 애매해졌다. WAS가 어플리케이션 로직 처리에 특화 되었다고 생각하자.
+
+WAS로만 웹구성시 WAS가 너무 많은 일을 한다.(정적 리소스 처리, 동적 리소스 처리 등등) -> WAS앞에 Web Server을 두어 정적 리소스는 웹서버가 처리하게 구성한다.
+
+이렇게 구성하면 WAS는 어플리케이션 로직만을 수행하며 과부하를 줄이고, 상대적으로 죽을 확률이 높은 WAS가 죽었을 때, 화면이 아예 노출이 안되는 불상사를 막을 수 있다.
+
 ## 서블릿
 * 소켓 연결이나 HTTP 메세지 파싱, 멀티 스레드와 같은 반복적이고 어려운 작업을 대신 해준다.
+* 동시 요청을 위한 멀티쓰레드 처리 지원
+
+멀티 쓰레드 풀을 이용해 관리.
+
+1. @ServletComponentScan
+2. @WebServlet 사용과 service 메서드 정의
 ```java
 @WebServlet(name = "helloServlet", urlPatterns = "/hello") 
 public class HelloServlet extends HttpServlet {
